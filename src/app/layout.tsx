@@ -13,7 +13,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "JustEat",
+  title: {
+    template: "JustEat | %s",
+    default: "JustEat"
+  },
   description: "食べたい時にサクッと",
 };
 
