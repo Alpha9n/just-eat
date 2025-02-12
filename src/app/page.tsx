@@ -1,3 +1,4 @@
+"use client";
 import SwipeableDrawer from "@/components/SwipeableDrawer";
 import Navigation from "@/components/Navigation";
 import { LocationTrackingMap } from "@/components/maps";
