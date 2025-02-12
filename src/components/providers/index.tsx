@@ -1,6 +1,7 @@
 "use client";
 import GoogleMapApiProvider from "@/components/providers/GoogleMapApiProvider";
 import { store } from "@/stores";
+import React from "react";
 import { Provider } from "react-redux";
 
 interface ProvidersProps {
