@@ -1,19 +1,11 @@
 import pino from "pino";
 
-export type LogLevel = "info" | "warn" | "error" | "debug";
+export type LogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace" | "silent";
 
 type Option = {
     calledBy: string;
-    statusCode: number;
+    statusCode: number | string;
 };
-
-const pinoConfig: pino.LoggerOptions = {
-    browser: {
-        asObject: true,
-    },
-};
-
-const pinoInstance = pino(pinoConfig);
 
 /**
  * ログ出力関数
@@ -23,19 +15,15 @@ const pinoInstance = pino(pinoConfig);
  * @param message ログ内容
  * @param option 詳細情報
  */
-export const logger = (level: LogLevel, message: string, option: Option) => {
-    switch (level) {
-        case "info":
-            pinoInstance.info(option, message);
-            break;
-        case "warn":
-            pinoInstance.warn(option, message);
-            break;
-        case "error":
-            pinoInstance.error(option, message);
-            break;
-        case "debug":
-            pinoInstance.debug(option, message);
-            break;
-    }
+export const logger = (level: LogLevel, message: string, option?: Option) => {
+    const pinoConfig: pino.LoggerOptions = {
+        level,
+        depthLimit: 10,
+        browser: {
+            asObject: true,
+        },
+    };
+
+    const pinoInstance = pino(pinoConfig);
+    pinoInstance[level]({ message, ...(option || {}) });
 };
