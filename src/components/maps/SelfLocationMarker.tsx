@@ -1,3 +1,4 @@
+"use client";
 import { logger } from "@/utils/logger";
 import { AdvancedMarker, GoogleMapsContext, latLngEquals } from "@vis.gl/react-google-maps";
 import { useContext, useEffect, useImperativeHandle, useRef } from "react";
@@ -19,7 +20,16 @@ interface CircleAreaProps {
  */
 const CircleArea = ({ radius, center }: CircleAreaProps) => {
     const callbacks = useRef<Record<string, (e: unknown) => void>>({});
-    const circle = useRef(new google.maps.Circle()).current;
+    const circleOption: google.maps.CircleOptions = {
+        strokeColor: "#111111",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#000000",
+        fillOpacity: 0.1,
+        clickable: false,
+        zIndex: -1,
+    };
+    const circle = useRef(new google.maps.Circle(circleOption)).current;
     const map = useContext(GoogleMapsContext)?.map;
 
     useEffect(() => {
@@ -35,8 +45,10 @@ const CircleArea = ({ radius, center }: CircleAreaProps) => {
     useEffect(() => {
         if (!map) {
             if (map === undefined)
-                logger('error', '<Circle> はMapコンポーネント内にある必要があります。', { calledBy: 'SelfLocationMarker#CircleArea()', statusCode: ''});
-
+                logger("error", "<Circle> はMapコンポーネント内にある必要があります。", {
+                    calledBy: "SelfLocationMarker#CircleArea()",
+                    statusCode: "",
+                });
             return;
         }
 
@@ -50,7 +62,7 @@ const CircleArea = ({ radius, center }: CircleAreaProps) => {
     useEffect(() => {
         const event = google.maps.event;
 
-        event.addListener(circle, 'center_changed', () => {
+        event.addListener(circle, "center_changed", () => {
             const newCenter = circle.getCenter();
             callbacks.current.onCenterChanged?.(newCenter);
         });
@@ -69,15 +81,13 @@ const CircleArea = ({ radius, center }: CircleAreaProps) => {
 /**
  * 現在地を示すマーカー
  */
-const SelfLocationMarker = ({ position, radius }: SelfLocationMarkerProps) => {
+export const SelfLocationMarker = ({ position, radius }: SelfLocationMarkerProps) => {
     return (
         <>
-            <AdvancedMarker position={position} anchorPoint={['50%', '50%']}>
+            <AdvancedMarker position={position} anchorPoint={["50%", "50%"]}>
                 <div className="w-5 h-5 bg-blue-500 rounded-full border-2" />
             </AdvancedMarker>
-            {radius && (<CircleArea radius={radius} center={position} />)}
+            {radius && <CircleArea radius={radius} center={position} />}
         </>
     );
 };
-
-export default SelfLocationMarker;
