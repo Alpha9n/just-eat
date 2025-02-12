@@ -1,4 +1,5 @@
-'use client';
+"use client";
+import { env } from "@/env";
 import { APIProvider } from "@vis.gl/react-google-maps";
 
 interface GoogleMapApiProvidersProps {
@@ -6,11 +7,7 @@ interface GoogleMapApiProvidersProps {
 }
 
 const GoogleMapApiProvider = ({ children }: GoogleMapApiProvidersProps) => {
-    return (
-        <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY?? ''}>
-            {children}
-        </APIProvider>
-    );
-}
+    return <APIProvider apiKey={env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>{children}</APIProvider>;
+};
 
 export default GoogleMapApiProvider;
