@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "../components/providers";
 import React from "react";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { env } from "@/env";
 
 export const metadata: Metadata = {
     title: {
@@ -21,6 +23,7 @@ const RootLayout = ({
             <body className="antialiased w-svw h-svh">
                 <Providers>{children}</Providers>
             </body>
+            <GoogleAnalytics gaId={env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID} />
         </html>
     );
 };
